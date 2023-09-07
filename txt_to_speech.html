@@ -1,0 +1,85 @@
+<!DOCTYPE html>     
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Speaker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <style>
+        body{
+            background: linear-gradient(135deg, #FFCF71 10%, #2376DD 100%);
+            background-repeat: no-repeat;
+            height:100vh;
+        }
+        textarea{
+            height:200px;
+            resize: none;
+            
+        }
+        h1:active{
+            color: red;
+        }
+        button:active{
+            background-color: yellow;
+            width:70px;
+            height: 30px;
+            
+        }
+        select{
+            width:50%;
+            
+        }
+    </style>
+</head>
+<body>
+    <header><h1 class="h1 text-center p-5">Text to Speech</h1></header>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col col-lg-6">
+                <textarea id="txt" class="form-control bg-info-subtle shadow-lg" placeholder="Enter any stuff.."></textarea>
+                <div class="btns text-center mt-4">
+                    <select class="form-select"></select>
+                   <button class="btn btn-success m-3" id="sound-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up-fill" viewBox="0 0 16 16">
+                    <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+                    <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/>
+                    <path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/>
+                  </svg> speak</button>
+                   <button class="btn btn-danger m-3" id="del-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                  </svg> clear</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let del=document.getElementById("del-btn");
+        let txt=document.getElementById("txt");
+        let speak_btn=document.getElementById("sound-btn");
+        del.addEventListener("click",()=>{
+            txt.value="";
+        })
+        let speech=new SpeechSynthesisUtterance();
+        let voices=[];
+        let voiceselect=document.querySelector("select");
+        window.speechSynthesis.onvoiceschanged=()=>{
+            voices=window.speechSynthesis.getVoices();
+            speech.voice=voices[0];
+            voices.forEach((voice,i)=>(voiceselect.options[i]=new Option(voice.name,i)))
+        }
+        voiceselect.addEventListener("change",()=>{
+            speech.voice=voices[voiceselect.value];
+        })
+        speak_btn.addEventListener("click",()=>{
+            if(txt.value==false){
+                return 0;
+            }
+            speech.text=txt.value;
+            window.speechSynthesis.speak(speech);
+
+        })
+    </script>
+</body>
+</html>
